@@ -7,7 +7,7 @@ const Application: React.FC<{}> = () => {
             <div className="min-h-screen flex items-center justify-center">
                 <h1 className="text-5xl text-blue-500 font-sans">Hello world!</h1>
             </div>
-            <button className="btn btn-blue">Test</button>
+            <button className="btn btn-blue rounded-none">Test</button>
         </div>
     )
 };
