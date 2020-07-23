@@ -3,7 +3,12 @@ import { render } from 'react-dom';
 
 const Application: React.FC<{}> = () => {
     return (
-        <h1>Hello world</h1>
+        <div>
+            <div className="min-h-screen flex items-center justify-center">
+                <h1 className="text-5xl text-blue-500 font-sans">Hello world!</h1>
+            </div>
+            <button className="btn btn-blue">Test</button>
+        </div>
     )
 };
 
