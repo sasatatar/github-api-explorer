@@ -8,7 +8,7 @@
     "start": "parcel ./src/index.html --open --port 5000",
     "prebuild": "rimraf ./dist",
     "build": "parcel build ./src/index.html --no-source-maps",
-    "codegen": "rimraf src/__generated__ && apollo codegen:generate --target typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint https://api.github.com/graphql --header \"Authorization: Bearer 34b76b62c4b643c315782ff96d12da0eb77e68a2\" --tagName gql --outputFlat src/__generated__ --watch"
+    "codegen": "rimraf src/__generated__ && apollo codegen:generate --target typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint https://api.github.com/graphql --header \"Authorization: Bearer 4bc7f86b9e9d78ecaaaf40458520ee6591ffca48\" --tagName gql --outputFlat src/__generated__ --watch"
   },
   "author": "",
   "license": "ISC",
