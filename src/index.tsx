@@ -4,7 +4,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Link
 } from "react-router-dom";
 import { Home } from './routes/home';
 import { ProfilePage } from './routes/profile';
@@ -24,8 +25,14 @@ render(
                 <Route exact path="/">
                     <Home />
                 </Route>
-                <Route path="/:userLogin">
+                <Route exact path="/:userLogin">
                     <ProfilePage />
+                </Route>
+                <Route path="*">
+                    <div>
+                        <h3>The page does not exist</h3>
+                        <Link to="/">Home</Link>
+                    </div>
                 </Route>
             </Switch>
         </Router>

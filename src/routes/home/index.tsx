@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
-import { User, UserVariables } from '../../__generated__/User';
+import { User, UserVariables } from '~/__generated__/User';
 import { Link } from 'react-router-dom';
-import { useDebounce } from '../../util/useDebounce';
+import { useDebounce } from '~/util/useDebounce';
 
 const USER_QUERY = gql`
     query User ($login: String!) { 

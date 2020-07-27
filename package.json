@@ -8,7 +8,8 @@
     "start": "parcel ./src/index.html --open --port 5000",
     "prebuild": "rimraf ./dist",
     "build": "parcel build ./src/index.html --no-source-maps",
-    "codegen": "rimraf src/__generated__ && apollo codegen:generate --target typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint https://api.github.com/graphql --header \"Authorization: Bearer 4bc7f86b9e9d78ecaaaf40458520ee6591ffca48\" --tagName gql --outputFlat src/__generated__ --watch"
+    "codegen": "rimraf src/__generated__ && apollo client:codegen --target typescript --outputFlat src/__generated__",
+    "codegen:watch": "apollo client:codegen --target typescript --outputFlat src/__generated__ --watch"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "apollo": "^2.30.1",
+    "dotenv": "^8.2.0",
     "npm-watch": "^0.6.0",
     "parcel-bundler": "^1.12.4",
     "rimraf": "^3.0.2",
