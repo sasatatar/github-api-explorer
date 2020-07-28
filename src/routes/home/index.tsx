@@ -48,7 +48,7 @@ export const Home: React.FC<{}> = () => {
                     }}
                     placeholder="GitHub username"
                 />
-                <button className="btn btn-blue" onClick={handleOnClick}>Search</button>
+                <button className="btn btn-blue" onClick={handleOnClick}><i className="fas fa-search mr-2"></i>Search</button>
                 {
                     !loading && data?.user
                     && (
