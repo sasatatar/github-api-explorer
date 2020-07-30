@@ -6,3 +6,17 @@
 @import "./components.css";
 
 @tailwind utilities;
+
+.lineheight-unset {
+    line-height: unset !important;
+}
+
+.circle {
+    fill: transparent;
+    stroke: theme('colors.gray.400');;
+    stroke-width: 10;
+    stroke-linecap: round;
+    transform-origin: 50% 50%;
+    stroke-dasharray: 104;
+    stroke-dashoffset: 105;
+}

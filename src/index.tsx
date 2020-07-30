@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { Home } from './routes/home';
 import { ProfilePage } from './routes/profile';
+import { SearchBox } from './SearchBox';
 
 const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
@@ -20,9 +21,15 @@ const client = new ApolloClient({
 
 render(
     <ApolloProvider client={client}>
+        <SearchBox />
         <Router>
             <Switch>
-                <Route exact path="/">
+
+                {/* <div className="max-w-7xl mx-auto py-12 sm:px-6 lg:px-8"> */}
+
+                {/* </div> */}
+
+                {/* <Route exact path="/">
                     <Home />
                 </Route>
                 <Route exact path="/:userLogin">
@@ -33,7 +40,7 @@ render(
                         <h3>The page does not exist</h3>
                         <Link to="/">Home</Link>
                     </div>
-                </Route>
+                </Route> */}
             </Switch>
         </Router>
     </ApolloProvider>,
