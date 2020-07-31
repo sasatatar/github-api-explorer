@@ -7,7 +7,6 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { Home } from './routes/home';
 import { ProfilePage } from './routes/profile';
 import { SearchBox } from './SearchBox';
 

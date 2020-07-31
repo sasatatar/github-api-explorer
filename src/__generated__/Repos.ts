@@ -80,6 +80,10 @@ export interface Repos_user {
    */
   url: any;
   /**
+   * The user's public profile bio.
+   */
+  bio: string | null;
+  /**
    * A URL pointing to the user's public avatar.
    */
   avatarUrl: any;
