@@ -1,9 +1,9 @@
+import { gql, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
 import { LoadingSpinner } from '~components/LoadingSpinner';
-import { Repos, ReposVariables } from '~__generated__/Repos';
-import { url } from 'inspector';
+import { Repos, ReposVariables, Repos_user_repositories_edges } from '~__generated__/Repos';
+import { UserProfile } from './UserProfile';
 
 const QUERY_REPOS = gql`
     query Repos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=5){
@@ -72,35 +72,17 @@ export const ProfilePage: React.FC<{}> = () => {
                     )
                     : user
                         ? (
-                            <div className="w-full py-5">
-                                <div className="w-1/4 h-full border-r">
-                                    <div className="w-full flex flex-col items-end pr-3">
-                                        <img src={user.avatarUrl} alt={user.name || ''}
-                                            className="mb-2 w-48 h-48 rounded shadow-md"
-                                        />
-                                        <div
-                                            className="flex-1"
-                                        >
-                                            <div className="text-2xl font-bold text-gray-700 text-right">{user.name}</div>
-                                            <div className="text-lg text-gray-600 w-full flex-1 flex flex-col items-end">
-                                                <p className="mt-2">
-                                                    <a className="text-blue-500 hover:underline" href="#"
-                                                        onClick={() => window.open(user?.url, "blank")}
-                                                    >
-                                                        <i className="fab fa-github-square mr-1"></i>
-                                                        <span className="">{user.login}</span>
-                                                    </a>
-                                                </p>
-                                                <p className="mt-2">
-                                                    <i className="far fa-envelope text-gray-600 mr-1"></i>
-                                                    <span className="flex-1 ">{user.email || '-'}</span>
-                                                </p>
-                                                <p className="mt-5 text-right text-base">
-                                                    {user.bio}
-                                                </p>
-                                            </div>
-                                        </div>
-
+                            <div className="w-full flex flex-row">
+                                <UserProfile user={user} />
+                                <div className="flex-1 pl-5 mt-4">
+                                    <div>
+                                        Repositories
+                                    </div>
+                                    <div>
+                                        <p>Repo data</p>
+                                        {
+                                            user.repositories?.edges && <Repositories repositories={user?.repositories?.edges} />
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -114,5 +96,24 @@ export const ProfilePage: React.FC<{}> = () => {
                         )
             }
         </div >
+    )
+}
+
+const Repositories: React.FC<{ repositories: (Repos_user_repositories_edges | null)[] | undefined }> = ({ repositories }) => {
+    return (
+        <div>
+            {
+                repositories && repositories.map((edge: Repos_user_repositories_edges | null) => {
+                    let node = edge?.node;
+                    return node && (
+                        <div key={node.url}>
+                            <h1>{node.name}</h1>
+                            <p>{node.description}</p>
+                            <a href="#">{node.url}</a>
+                        </div>
+                    )
+                })
+            }
+        </div>
     )
 }
