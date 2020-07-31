@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { User, UserVariables, User_user } from '~/__generated__/User';
-import { Link } from 'react-router-dom';
 import { useDebounce } from '~/util/useDebounce';
 import { useLocalStorage } from '~/util/useLocalStorage';
 import { LoadingSpinner } from '~components/LoadingSpinner';
+import { useHistory } from 'react-router-dom';
 
 const USER_QUERY = gql`
     query User ($login: String!) { 
@@ -20,6 +20,7 @@ const USER_QUERY = gql`
 
 export const SearchBox: React.FC<{}> = () => {
 
+    const history = useHistory();
     const [query, setQuery] = useState('');
     let login = useDebounce(query, 500);
     let [isOpen, setIsOpen] = useState(false);
@@ -28,12 +29,13 @@ export const SearchBox: React.FC<{}> = () => {
     function onSelectUser(user: User_user) {
         updateSearchHistory(user);
         setIsOpen(false);
+        history.push(`/${user.login}`, null);
     }
 
     return (
         <div className="shadow-lg">
             <div className="bg-blue-800 border-b-4 border-blue-400">
-                <div className="max-w-4xl mx-auto sm: w-full flex flex-row items-center">
+                <div className="max-w-4xl mx-auto sm:w-full flex flex-row items-center">
                     < div className="py-3 px-0 relative overflow-visible flex-1" >
                         <div
                             className={`py-1 px-2 w-1/3 bg-white rounded border-blue-400 border flex flex-row items-center`}
@@ -43,7 +45,6 @@ export const SearchBox: React.FC<{}> = () => {
                                 placeholder="GitHub username"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                //${isOpen ? '' : 'border-opacity-0'}
                                 onFocus={(e) => {
                                     setIsOpen(true);
                                 }}

@@ -21,18 +21,10 @@ const client = new ApolloClient({
 
 render(
     <ApolloProvider client={client}>
-        <SearchBox />
         <Router>
+            <SearchBox />
             <Switch>
-
-                {/* <div className="max-w-7xl mx-auto py-12 sm:px-6 lg:px-8"> */}
-
-                {/* </div> */}
-
-                {/* <Route exact path="/">
-                    <Home />
-                </Route>
-                <Route exact path="/:userLogin">
+                <Route path="/:userLogin">
                     <ProfilePage />
                 </Route>
                 <Route path="*">
@@ -40,7 +32,7 @@ render(
                         <h3>The page does not exist</h3>
                         <Link to="/">Home</Link>
                     </div>
-                </Route> */}
+                </Route>
             </Switch>
         </Router>
     </ApolloProvider>,
