@@ -64,7 +64,7 @@ export const SearchBox: React.FC<{}> = () => {
                         </div>
                         {
                             isOpen && (
-                                login
+                                query
                                     ? <SearchResult login={login} onSelectUser={onSelectUser} />
                                     : <SearchHistory searchHistory={searchHistory} onSelectUser={onSelectUser} />
                             )
@@ -144,18 +144,22 @@ const SearchResult: React.FC<{
     onSelectUser: (user: User_user) => void
 }> = ({ login, onSelectUser }) => {
 
-    let { loading, error, data } = useQuery<User, UserVariables>(USER_QUERY, { variables: { login } });
-    // const [getUser, { loading, error, data }] = useLazyQuery<User, UserVariables>(USER_QUERY);
-    if (error) console.error(error);
+    let query;
+    // this prevents initial query where login is an empty string
+    if (login)
+        query = useQuery<User, UserVariables>(USER_QUERY, { variables: { login } });
 
-    let user = data?.user;
+    // const [getUser, { loading, error, data }] = useLazyQuery<User, UserVariables>(USER_QUERY);
+    if (query?.error) console.error(query.error);
+
+    let user = query?.data?.user;
 
     return (
         <div className={`absolute w-1/2 shadow-md border rounded-md bg-white transition-opacity`} style={{ height: 141 }}>
             <div className="pl-3 pr-2 py-3 h-full flex flex-col">
                 <h1 className="text-l text-gray-700 mb-2">Search result</h1>
                 {
-                    loading
+                    query?.loading
                         ? (
                             <div className="flex-1 flex items-center justify-center"><LoadingSpinner className="h-10 w-10" /></div>
                         )
