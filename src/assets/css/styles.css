@@ -13,10 +13,29 @@
 
 .circle {
     fill: transparent;
-    stroke: theme('colors.gray.400');;
+    stroke: theme('colors.gray.400');
     stroke-width: 10;
     stroke-linecap: round;
     transform-origin: 50% 50%;
     stroke-dasharray: 104;
     stroke-dashoffset: 105;
+}
+
+.search_menu {
+    height: 50vh;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 18px;
+    background-color: theme('colors.gray.300');
 }

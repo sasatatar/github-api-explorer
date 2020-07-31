@@ -4,6 +4,7 @@ import { User, UserVariables, User_user } from '~/__generated__/User';
 import { Link } from 'react-router-dom';
 import { useDebounce } from '~/util/useDebounce';
 import { useLocalStorage } from '~/util/useLocalStorage';
+import { LoadingSpinner } from '~components/LoadingSpinner';
 
 const USER_QUERY = gql`
     query User ($login: String!) { 
@@ -47,11 +48,12 @@ export const SearchBox: React.FC<{}> = () => {
                                     setIsOpen(true);
                                 }}
                                 onBlur={(e) => {
-                                    setTimeout(() => setIsOpen(false), 300);
+                                    setTimeout(() => setIsOpen(false), 250);
                                 }}
+                                autoComplete="off"
                             />
                             <div className="ml-2">
-                                <i className={`fas ${query ? 'fa-times' : 'fa-search'} w-5 text-lg font-light text-gray-400 text-center hover:text-gray-600 lineheight-unset`}
+                                <i className={`fas ${query ? 'fa-times' : 'fa-search'} w-5 text-sm font-thin text-gray-400 text-center hover:text-gray-600 lineheight-unset`}
                                     onClick={() => {
                                         setQuery('');
                                         setIsOpen(false);
@@ -77,11 +79,29 @@ export const SearchBox: React.FC<{}> = () => {
     );
 }
 
-const LoadingSpinner: React.FC<{ className?: string }> = ({ className }) => {
+
+const UserCard: React.FC<{ user: User_user }> = ({ user }) => {
     return (
-        <svg className={`circle animate-spin ${className}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" />
-        </svg>
+        <div className="w-full flex flex-row">
+            <img src={user.avatarUrl} alt={user.name || ''}
+                className="mr-4 mt-1 w-16 h-16 rounded"
+            />
+            <div
+                className="text-sm flex-1"
+            >
+                <div className="text-lg font-bold text-gray-700">{user.name}</div>
+                <div className="text-gray-600 w-full flex-1 flex flex-row flex-wrap">
+                    <p className="whitespace-no-wrap">
+                        <i className="fab fa-github-square mr-1"></i>
+                        <span className="mr-2">{user.login}</span>
+                    </p>
+                    <p className="flex-1 whitespace-no-wrap">
+                        <i className="far fa-envelope text-gray-600 mr-1"></i>
+                        <span className="flex-1">{user.email || '-'}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
     )
 }
 
@@ -90,30 +110,29 @@ const SearchHistory: React.FC<{
     onSelectUser: (user: User_user) => void
 }> = ({ searchHistory, onSelectUser }) => {
     return (
-        <div className={`absolute w-1/2 h-1/2 shadow-md border rounded-md bg-white transition-opacity`}>
-            <div className="p-5">
-                <h1 className="text-xl mb-3">Search history</h1>
-                {
-                    searchHistory.length > 0
-                    && (
-                        <ul>
-                            <React.Fragment>
-                                {searchHistory.map((user: User_user) => (
-                                    <li
-                                        onClick={() => onSelectUser(user)}
-                                        key={user.login}
-                                    >
-                                        <img src={user.avatarUrl} alt={user.name || ''} className="m-2" />
-                                        <div>{user.name}</div>
-                                        <span>{user.login}</span>
-                                        <div>{user.email}</div>
-                                        <a href={user.url}>Go to github page</a>
-                                    </li>
-                                ))}
-                            </React.Fragment>
-                        </ul>
-                    )
-                }
+        <div className={`search_menu absolute w-1/2 shadow-md border rounded-md bg-white transition-opacity`}>
+            <div className="pl-3 pr-2 py-3 h-full flex flex-col">
+                <h1 className="text-l text-gray-700 mb-2">Search history</h1>
+                <div className="overflow-y-scroll overflow-x-hidden flex-1">
+                    {
+                        searchHistory.length > 0
+                        && (
+                            <ul>
+                                <React.Fragment>
+                                    {searchHistory.map((user: User_user) => (
+                                        <li
+                                            onClick={() => onSelectUser(user)}
+                                            key={user.login}
+                                            className="flex flex-row py-2 pl-2 hover:bg-gray-200 cursor-pointer"
+                                        >
+                                            <UserCard user={user} />
+                                        </li>
+                                    ))}
+                                </React.Fragment>
+                            </ul>
+                        )
+                    }
+                </div>
             </div>
         </div>
     )
@@ -131,12 +150,13 @@ const SearchResult: React.FC<{
     let user = data?.user;
 
     return (
-        <div className={`absolute w-1/2 max-h-1/2 shadow-md border rounded-md bg-white transition-opacity`}>
-            <div className="p-5">
+        <div className={`absolute w-1/2 shadow-md border rounded-md bg-white transition-opacity`} style={{ height: 141 }}>
+            <div className="pl-3 pr-2 py-3 h-full flex flex-col">
+                <h1 className="text-l text-gray-700 mb-2">Search result</h1>
                 {
                     loading
                         ? (
-                            <div><LoadingSpinner /></div>
+                            <div className="flex-1 flex items-center justify-center"><LoadingSpinner className="h-10 w-10" /></div>
                         )
                         : user
                             ? (
@@ -144,15 +164,12 @@ const SearchResult: React.FC<{
                                     onClick={() => {
                                         user && onSelectUser(user);
                                     }}
+                                    className="flex flex-row py-2 pl-2 hover:bg-gray-200 cursor-pointer"
                                 >
-                                    <img src={user.avatarUrl} />
-                                    <div>{user.name}</div>
-                                    <span>{user.login}</span>
-                                    <div>{user.email}</div>
-                                    <a href={user.url}>Go to github page</a>
+                                    <UserCard user={user} />
                                 </div>
                             )
-                            : <div>No matches found</div>
+                            : <div className="flex-1 flex items-center justify-center text-gray-500 text-sm align-middle mb-4">No matches found</div>
                 }
             </div>
         </div>
