@@ -7,7 +7,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { ProfilePage } from './routes/profile';
+import { Profile } from './routes/profile';
 import { SearchBox } from './SearchBox';
 
 const client = new ApolloClient({
@@ -24,7 +24,7 @@ render(
             <SearchBox />
             <Switch>
                 <Route path="/:userLogin">
-                    <ProfilePage />
+                    <Profile />
                 </Route>
                 <Route path="*">
                     <div>

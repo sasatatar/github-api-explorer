@@ -13,11 +13,9 @@ export const UserProfile: React.FC<{ user: Repos_user }> = ({ user }) => {
                         className="flex-1"
                     >
                         <div className="text-2xl font-bold text-gray-700 text-right">{user.name}</div>
-                        <div className="text-lg text-gray-600 w-full flex-1 flex flex-col items-end">
+                        <div className="text-md text-gray-600 w-full flex-1 flex flex-col items-end">
                             <p className="mt-2">
-                                <a className="text-blue-500 hover:underline" href="#"
-                                    onClick={() => window.open(user?.url, "blank")}
-                                >
+                                <a className="text-blue-500 hover:underline" href={user.url} target="blank">
                                     <i className="fab fa-github-square mr-1"></i>
                                     <span className="">{user.login}</span>
                                 </a>
@@ -26,7 +24,7 @@ export const UserProfile: React.FC<{ user: Repos_user }> = ({ user }) => {
                                 <i className="far fa-envelope text-gray-600 mr-1"></i>
                                 <span className="flex-1 ">{user.email || '-'}</span>
                             </p>
-                            <p className="mt-5 text-right text-base">
+                            <p className="mt-5 text-right text-sm">
                                 {user.bio}
                             </p>
                         </div>

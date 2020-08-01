@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { LoadingSpinner } from '~components/LoadingSpinner';
 import { Repos, ReposVariables, Repos_user_repositories_edges } from '~__generated__/Repos';
 import { UserProfile } from './UserProfile';
+import { Repositories } from './Repositories';
+import { RepositoryOrderField, OrderDirection, RepositoryOrder } from '~__generated__/globalTypes';
 
 const QUERY_REPOS = gql`
     query Repos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=5){
@@ -32,12 +34,23 @@ const QUERY_REPOS = gql`
     }
 `;
 
-export const ProfilePage: React.FC<{}> = () => {
+export const Profile: React.FC<{}> = () => {
 
     let { userLogin } = useParams();
-    let [orderBy, setOrderBy] = useState();
+    // let [orderBy, setOrderBy] = useState<RepositoryOrder>();
+    let orderBy: RepositoryOrder | null = null;
+    let [orderField, setOrderField] = useState<RepositoryOrderField | ''>('');
+    let [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+
+    orderBy = orderField
+        ? {
+            field: orderField,
+            direction: orderDirection
+        }
+        : null;
+
     let [cursor, setCursor] = useState();
-    let [pageSize, setPageSize] = useState();
+    let [pageSize, setPageSize] = useState<number>();
 
     let { data, loading, error } = useQuery<Repos, ReposVariables>(
         QUERY_REPOS,
@@ -74,46 +87,39 @@ export const ProfilePage: React.FC<{}> = () => {
                         ? (
                             <div className="w-full flex flex-row">
                                 <UserProfile user={user} />
-                                <div className="flex-1 pl-5 mt-4">
-                                    <div>
-                                        Repositories
+                                <div className="flex-1 pt-4 pl-4">
+                                    <div className="flex flex-row mb-2 items-baseline">
+                                        <h1 className="text-gray-800 text-lg font-semibold">Repositories</h1>
+                                        <label className="ml-auto text-sm text-gray-800 mr-1">Order by</label>
+                                        <select
+                                            onChange={e => {
+                                                let value = e.target.value;
+                                                setOrderField(value);
+                                            }}
+                                            value={orderField} className="text-sm rounded-sm border"
+                                        >
+                                            <option value={''}>None</option>
+                                            <option value={RepositoryOrderField.NAME}>Name</option>
+                                            <option value={RepositoryOrderField.STARGAZERS}>Stargazers</option>
+                                            <option value={RepositoryOrderField.CREATED_AT}>Created at</option>
+                                            <option value={RepositoryOrderField.PUSHED_AT}>Pushed at</option>
+                                        </select>
                                     </div>
-                                    <div>
-                                        <p>Repo data</p>
-                                        {
-                                            user.repositories?.edges && <Repositories repositories={user?.repositories?.edges} />
-                                        }
-                                    </div>
+                                    {
+                                        user.repositories?.edges && <Repositories repositories={user?.repositories?.edges} />
+                                    }
                                 </div>
                             </div>
                         )
-                        : (
+                        : error && (
                             <div className="flex-1 h-full flex justify-center mt-40">
                                 <div className="flex flex-col items-center mb-8">
-                                    <div className="mt-4 text-gray-600">User name <span className="font-mono text-gray-600 font-bold">{userLogin}</span> does not exist.</div>
+                                    {/* <div className="mt-4 text-gray-600">User name <span className="font-mono text-gray-600 font-bold">{userLogin}</span> does not exist.</div> */}
+                                    <div className="mt-4 text-gray-600"><span className="text-red-600">Error: </span>{error.message}</div>
                                 </div>
                             </div>
                         )
             }
         </div >
-    )
-}
-
-const Repositories: React.FC<{ repositories: (Repos_user_repositories_edges | null)[] | undefined }> = ({ repositories }) => {
-    return (
-        <div>
-            {
-                repositories && repositories.map((edge: Repos_user_repositories_edges | null) => {
-                    let node = edge?.node;
-                    return node && (
-                        <div key={node.url}>
-                            <h1>{node.name}</h1>
-                            <p>{node.description}</p>
-                            <a href="#">{node.url}</a>
-                        </div>
-                    )
-                })
-            }
-        </div>
     )
 }

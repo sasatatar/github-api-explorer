@@ -25,6 +25,10 @@
     height: 50vh;
 }
 
+.repo_card {
+    width: 320px;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
