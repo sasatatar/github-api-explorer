@@ -9,7 +9,7 @@ import { RepositoryOrder } from "./globalTypes";
 // GraphQL query operation: Repos
 // ====================================================
 
-export interface Repos_user_repositories_edges_node {
+export interface Repos_user_repositories_nodes {
   __typename: "Repository";
   /**
    * The name of the repository.
@@ -23,14 +23,6 @@ export interface Repos_user_repositories_edges_node {
    * The HTTP URL for this repository
    */
   url: any;
-}
-
-export interface Repos_user_repositories_edges {
-  __typename: "RepositoryEdge";
-  /**
-   * The item at the end of the edge.
-   */
-  node: Repos_user_repositories_edges_node | null;
 }
 
 export interface Repos_user_repositories_pageInfo {
@@ -48,13 +40,9 @@ export interface Repos_user_repositories_pageInfo {
 export interface Repos_user_repositories {
   __typename: "RepositoryConnection";
   /**
-   * A list of edges.
+   * A list of nodes.
    */
-  edges: (Repos_user_repositories_edges | null)[] | null;
-  /**
-   * Identifies the total count of items in the connection.
-   */
-  totalCount: number;
+  nodes: (Repos_user_repositories_nodes | null)[] | null;
   /**
    * Information to aid in pagination.
    */

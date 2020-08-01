@@ -1,5 +1,5 @@
 import React from 'react';
-import { Repos_user } from "~__generated__/Repos"
+import { Repos_user } from "~__generated__/Repos";
 
 export const UserProfile: React.FC<{ user: Repos_user }> = ({ user }) => {
     return (

@@ -2,31 +2,28 @@ import { gql, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LoadingSpinner } from '~components/LoadingSpinner';
-import { Repos, ReposVariables, Repos_user_repositories_edges } from '~__generated__/Repos';
+import { Repos, ReposVariables } from '~__generated__/Repos';
 import { UserProfile } from './UserProfile';
 import { Repositories } from './Repositories';
 import { RepositoryOrderField, OrderDirection, RepositoryOrder } from '~__generated__/globalTypes';
 
 const QUERY_REPOS = gql`
-    query Repos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=5){
+    query Repos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=10){
         user(login: $login) {
-            login,
-            email,
-            name,
-            url,
-            bio,
-            avatarUrl(size: 200),
+            login
+            email
+            name
+            url
+            bio
+            avatarUrl(size: 200)
             repositories(first: $pageSize, orderBy: $orderBy, after: $cursor) {
-                edges {
-                    node {
-                        name,
-                        description,
-                        url,
-                    }
-                },
-                totalCount,
+                nodes {
+                    name
+                    description
+                    url
+                }
                 pageInfo {
-                    endCursor,
+                    endCursor
                     hasNextPage
                 }
             }
@@ -49,7 +46,7 @@ export const Profile: React.FC<{}> = () => {
         }
         : null;
 
-    let [cursor, setCursor] = useState();
+    let [cursor, setCursor] = useState<string | null>();
     let [pageSize, setPageSize] = useState<number>();
 
     let { data, loading, error } = useQuery<Repos, ReposVariables>(
@@ -67,6 +64,7 @@ export const Profile: React.FC<{}> = () => {
     if (error) console.error(error);
 
     let user = data?.user;
+    let pageInfo = user?.repositories.pageInfo;
 
     return (
 
@@ -87,7 +85,7 @@ export const Profile: React.FC<{}> = () => {
                         ? (
                             <div className="w-full flex flex-row">
                                 <UserProfile user={user} />
-                                <div className="flex-1 pt-4 pl-4">
+                                <div className="flex flex-col flex-1 py-4 pl-4">
                                     <div className="flex flex-row mb-2 items-baseline">
                                         <h1 className="text-gray-800 text-lg font-semibold">Repositories</h1>
                                         <label className="ml-auto text-sm text-gray-800 mr-1">Order by</label>
@@ -106,8 +104,15 @@ export const Profile: React.FC<{}> = () => {
                                         </select>
                                     </div>
                                     {
-                                        user.repositories?.edges && <Repositories repositories={user?.repositories?.edges} />
+                                        user.repositories?.nodes && <Repositories repositories={user.repositories.nodes} />
                                     }
+                                    <div className="flex-1" />
+                                    <button
+                                        className="self-center border border-gray-700 bg-blue-400 rounded py-1 px-2 text-white text-sm"
+                                        onClick={() => {
+                                            pageInfo && setCursor(pageInfo?.endCursor)
+                                        }}
+                                    >Load more</button>
                                 </div>
                             </div>
                         )

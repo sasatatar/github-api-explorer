@@ -1,12 +1,11 @@
 import React from 'react';
-import { Repos_user_repositories_edges } from '~__generated__/Repos';
+import { Repos_user_repositories_nodes } from '~__generated__/Repos';
 
-export const Repositories: React.FC<{ repositories: (Repos_user_repositories_edges | null)[] | undefined }> = ({ repositories }) => {
+export const Repositories: React.FC<{ repositories: (Repos_user_repositories_nodes | null)[] | null }> = ({ repositories }) => {
     return (
         <ul className="flex flex-row flex-wrap justify-between">
             {
-                repositories && repositories.map((edge: Repos_user_repositories_edges | null) => {
-                    let node = edge?.node;
+                repositories && repositories.map((node: Repos_user_repositories_nodes | null) => {
                     return node && (
                         <li key={node.url} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
                             <a href={node.url} target="blank"
