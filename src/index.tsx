@@ -27,9 +27,11 @@ render(
                     <Profile />
                 </Route>
                 <Route path="*">
-                    <div>
-                        <h3>The page does not exist</h3>
-                        <Link to="/">Home</Link>
+                    <div className="flex-1 h-full flex items-center justify-center">
+                        <div className="mb-20 flex flex-col items-center">
+                            <h1 className="text-2xl text-gray-800 font-bold mb-2">Welcome!</h1>
+                            <p>Use the search field above to select a user.</p>
+                        </div>
                     </div>
                 </Route>
             </Switch>
