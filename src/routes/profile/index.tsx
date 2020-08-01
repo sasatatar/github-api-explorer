@@ -51,10 +51,11 @@ const FETCH_MORE_REPOS = gql`
 export const Profile: React.FC<{}> = () => {
 
     let { userLogin } = useParams();
-    // let [orderBy, setOrderBy] = useState<RepositoryOrder>();
     let orderBy: RepositoryOrder | null = null;
     let [orderField, setOrderField] = useState<RepositoryOrderField | ''>('');
+    // TODO: implement sortDirection UI
     let [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+    // let [loadMore, setLoadMore] = useState<boolean>(false);
 
     orderBy = orderField
         ? {
@@ -124,10 +125,10 @@ export const Profile: React.FC<{}> = () => {
 
     return (
 
-        <div className="max-w-4xl mx-auto sm:w-full flex-1 flex flex-row">
+        <div className="max-w-4xl mx-auto sm:w-full flex-1 flex flex-row overflow-hidden">
 
             {
-                loading
+                loading && !user
                     ? (
                         <div className="flex-1 h-full flex items-center justify-center">
                             <div className="flex flex-col items-center mb-8">
@@ -139,7 +140,7 @@ export const Profile: React.FC<{}> = () => {
                     )
                     : user
                         ? (
-                            <div className="w-full flex flex-row">
+                            <div className="w-full flex flex-row flex-1">
                                 <UserProfile user={user} />
                                 <div className="flex flex-col flex-1 py-4 pl-4">
                                     <div className="flex flex-row mb-2 items-baseline">
@@ -159,27 +160,35 @@ export const Profile: React.FC<{}> = () => {
                                             <option value={RepositoryOrderField.PUSHED_AT}>Pushed at</option>
                                         </select>
                                     </div>
-                                    {
-                                        repositories && <Repositories repositories={repositories.nodes} />
-                                    }
-                                    {
-                                        pageInfo?.hasNextPage && (
-                                            <React.Fragment>
-                                                <div className="flex-1" />
-                                                <button
-                                                    className="self-center border border-gray-700 bg-blue-400 rounded py-1 px-2 text-white text-sm"
-                                                    onClick={onLoadMore}
-                                                >Load more</button>
-                                            </React.Fragment>
-                                        )
-                                    }
+                                    <div className="flex-1 overflow-y-scroll flex flex-col items-center">
+                                        {
+                                            repositories && <Repositories repositories={repositories.nodes} />
+                                        }
+                                        {
+                                            pageInfo?.hasNextPage && (
+                                                <React.Fragment>
+                                                    <button
+                                                        className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 h-8 focus:border-none"
+                                                        onClick={onLoadMore}
+                                                    // onClick={() => setLoadMore(!loadMore)}
+                                                    >
+                                                        {
+                                                            loading
+                                                                ? <LoadingSpinner className="w-4 inline-block mr-2 mb-1 text-white" />
+                                                                : <i className="fas fa-chevron-down w-4 mr-2"></i>
+                                                        }
+                                                        <span>Load more</span>
+                                                    </button>
+                                                </React.Fragment>
+                                            )
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         )
                         : error && (
                             <div className="flex-1 h-full flex justify-center mt-40">
                                 <div className="flex flex-col items-center mb-8">
-                                    {/* <div className="mt-4 text-gray-600">User name <span className="font-mono text-gray-600 font-bold">{userLogin}</span> does not exist.</div> */}
                                     <div className="mt-4 text-gray-600"><span className="text-red-600">Error: </span>{error.message}</div>
                                 </div>
                             </div>
