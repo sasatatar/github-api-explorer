@@ -93,12 +93,12 @@ export const Profile: React.FC<{}> = () => {
                                         <label className="ml-auto text-sm text-gray-800 mr-1">Order by</label>
                                         <select
                                             onChange={e => {
-                                                let value = e.target.value;
+                                                let value = e.target.value as RepositoryOrderField;
                                                 setOrderField(value);
                                             }}
                                             value={orderField} className="text-sm rounded-sm border"
                                         >
-                                            <option value={''}>None</option>
+                                            <option value={''}>-</option>
                                             <option value={RepositoryOrderField.NAME}>Name</option>
                                             <option value={RepositoryOrderField.STARGAZERS}>Stargazers</option>
                                             <option value={RepositoryOrderField.CREATED_AT}>Created at</option>
