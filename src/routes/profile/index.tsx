@@ -7,6 +7,22 @@ import { UserProfile } from './UserProfile';
 import { Repositories } from './Repositories';
 import { RepositoryOrderField, OrderDirection, RepositoryOrder } from '~__generated__/globalTypes';
 
+const repositories = gql`
+    fragment Repositories on User {
+        repositories(first: $pageSize, orderBy: $orderBy, after: $cursor) {
+            nodes {
+                name
+                description
+                url
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+`
+
 const QUERY_REPOS = gql`
     query Repos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=10){
         user(login: $login) {
@@ -16,20 +32,21 @@ const QUERY_REPOS = gql`
             url
             bio
             avatarUrl(size: 200)
-            repositories(first: $pageSize, orderBy: $orderBy, after: $cursor) {
-                nodes {
-                    name
-                    description
-                    url
-                }
-                pageInfo {
-                    endCursor
-                    hasNextPage
-                }
-            }
+            ...Repositories
         }
     }
+    ${repositories}
 `;
+
+const FETCH_MORE_REPOS = gql`
+    query MoreRepos($cursor: String, $orderBy: RepositoryOrder, $login: String!, $pageSize: Int=10){
+        user(login: $login) {
+            ...Repositories
+        }
+    }
+    ${repositories}
+`;
+
 
 export const Profile: React.FC<{}> = () => {
 
@@ -47,24 +64,63 @@ export const Profile: React.FC<{}> = () => {
         : null;
 
     let [cursor, setCursor] = useState<string | null>();
-    let [pageSize, setPageSize] = useState<number>();
 
-    let { data, loading, error } = useQuery<Repos, ReposVariables>(
+    let { data, loading, error, fetchMore } = useQuery<Repos, ReposVariables>(
         QUERY_REPOS,
         {
             variables: {
                 login: userLogin,
                 orderBy,
-                cursor,
-                pageSize
-            }
-        }
+                cursor
+            },
+            notifyOnNetworkStatusChange: true
+        },
     );
+
+    let user = data?.user;
+    let repositories = user?.repositories;
+    let pageInfo = repositories?.pageInfo;
+
+    function onLoadMore() {
+        fetchMore({
+            query: FETCH_MORE_REPOS,
+            variables: { cursor: pageInfo?.endCursor, login: userLogin },
+            // updateQuery: ({ user }: Repos, { fetchMoreResult }: { fetchMoreResult: Repos }) => {
+            updateQuery: (previousQueryResult: Repos, options: {
+                fetchMoreResult?: Repos | undefined;
+                variables?: ReposVariables | undefined;
+            }): Repos => {
+
+                let user = previousQueryResult.user;
+                let newUser = options?.fetchMoreResult?.user;
+
+                if (!newUser) return previousQueryResult;
+
+                return {
+                    user: {
+                        ...user,
+                        ...newUser,
+                        repositories: {
+                            ...newUser.repositories,
+                            nodes: [
+                                ...user?.repositories.nodes,
+                                ...newUser.repositories.nodes
+                            ],
+                            pageInfo: {
+                                __typename: newUser.repositories.pageInfo.__typename,
+                                endCursor: newUser.repositories?.pageInfo?.endCursor || null,
+                                hasNextPage: newUser.repositories?.pageInfo?.hasNextPage || false
+                            }
+                        }
+                    }
+
+                }
+            }
+        })
+    }
 
     if (error) console.error(error);
 
-    let user = data?.user;
-    let pageInfo = user?.repositories.pageInfo;
 
     return (
 
@@ -104,15 +160,19 @@ export const Profile: React.FC<{}> = () => {
                                         </select>
                                     </div>
                                     {
-                                        user.repositories?.nodes && <Repositories repositories={user.repositories.nodes} />
+                                        repositories && <Repositories repositories={repositories.nodes} />
                                     }
-                                    <div className="flex-1" />
-                                    <button
-                                        className="self-center border border-gray-700 bg-blue-400 rounded py-1 px-2 text-white text-sm"
-                                        onClick={() => {
-                                            pageInfo && setCursor(pageInfo?.endCursor)
-                                        }}
-                                    >Load more</button>
+                                    {
+                                        pageInfo?.hasNextPage && (
+                                            <React.Fragment>
+                                                <div className="flex-1" />
+                                                <button
+                                                    className="self-center border border-gray-700 bg-blue-400 rounded py-1 px-2 text-white text-sm"
+                                                    onClick={onLoadMore}
+                                                >Load more</button>
+                                            </React.Fragment>
+                                        )
+                                    }
                                 </div>
                             </div>
                         )
