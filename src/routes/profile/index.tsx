@@ -64,15 +64,12 @@ export const Profile: React.FC<{}> = () => {
         }
         : null;
 
-    let [cursor, setCursor] = useState<string | null>();
-
     let { data, loading, error, fetchMore } = useQuery<Repos, ReposVariables>(
         QUERY_REPOS,
         {
             variables: {
                 login: userLogin,
-                orderBy,
-                cursor
+                orderBy
             },
             notifyOnNetworkStatusChange: true
         },
