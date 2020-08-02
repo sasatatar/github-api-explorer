@@ -165,7 +165,7 @@ export const Profile: React.FC<{}> = () => {
                                             pageInfo?.hasNextPage && (
                                                 <React.Fragment>
                                                     <button
-                                                        className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 h-8 focus:border-none"
+                                                        className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 h-8 focus:outline-none"
                                                         onClick={onLoadMore}
                                                     // onClick={() => setLoadMore(!loadMore)}
                                                     >
