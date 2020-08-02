@@ -37,6 +37,8 @@ All in all, I really enjoyed working on this project, as it helped me get better
 - On the profile page `useQuery` is used to fetch both the user data and the first load of repos with the same request, and more repos alone can be loadad using the `fetcMore` API. This seemed like a great idea at firts, but the change of `orderBy` parameter cannot use the `fetchMore` (`fetchMore` merges the results with the existing list of repos that can have different ordering, which is bad), so the entire page reloads and the user data is loaded again as well. 
 `TODO:` split the user data and repos in two seperate queries which will need two seperate requestes to the server initially, but the solution is overall cleaner and easier to manage.
 - Also related to the `fetchMore` API, the `loading` value is not updated, even though I used the `notifyOnNetworkStatusChange` as instructed in the docs, so there is no loading indicator when loading more repos. Will try to see what is the issue.
+- The `updateQuery` callback for `fetchMore` is deprecated, and will be removed in the next major version of Apollo Client. `TODO:` convert updateQuery functions to field policies with appropriate
+read and merge functions - this also fixes the previous issue, so definitely worth looking into.
 
 ### Misc
 - Good to know: initially .env file was included in the repo, since the access token is exposed in the network console anyway, but Gihub checks for unintentionally comitted tokens and cancels them automatically.
@@ -45,4 +47,4 @@ All in all, I really enjoyed working on this project, as it helped me get better
 
 ### Styling
 - The app is not optimized for mobile devices, but I might do it in the future for practice. 
-- For some reason ::-webkit-scrollbar-thumb class is not included from styles.css in the budeled css file, which consequently makes the scrollbar handle invisible in production (on Chrome and Edge). I will try to figure out what is the cause.
+- For some reason ::-webkit-scrollbar-thumb class is not included from styles.css in the budeled css file, which consequently makes the scrollbar handle invisible in production (on Chrome and Edge). `TODO:` try to figure out the cause and fix it.
