@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RepositoryOrder, RepositoryOrderField, OrderDirection } from '~__generated__/globalTypes';
 import { gql, useQuery } from '@apollo/client';
-import { RepositoryDataVariables, RepositoryData, RepositoryData_user_repositories, RepositoryData_user_repositories_nodes } from '~__generated__/RepositoryData';
+import { RepositoryDataVariables, RepositoryData, RepositoryData_user_repositories_nodes } from '~__generated__/RepositoryData';
 import { LoadingSpinner } from '~components/LoadingSpinner';
 
 const QUERY_REPOSITORIES = gql`
