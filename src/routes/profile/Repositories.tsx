@@ -113,35 +113,48 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                 </select>
             </div>
             <div className="flex-1 overflow-y-scroll flex flex-col items-center">
-                <ul className="flex flex-row flex-wrap justify-between">
-                    {
-                        repositories && repositories.map((node: RepositoryData_user_repositories_nodes | null) => {
-                            return node && (
-                                <li key={node.id} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
-                                    <a href={node.url} target="blank"
-                                        className="text-blue-600 font-semibold text-xs hover:underline"
-                                    >{node.name}</a>
-                                    <p className="my-2 text-xs">{node.description}</p>
-                                </li>
-                            )
-                        })
-                    }
-                </ul>
                 {
-                    pageInfo?.hasNextPage && (
-                        <button
-                            className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 focus:outline-none"
-                            onClick={onLoadMore}
-                        // onClick={() => setLoadMore(!loadMore)}
-                        >
-                            {
-                                true
-                                    ? <LoadingSpinner className="w-4 inline-block mr-2 text-white" />
-                                    : <i className="fas fa-chevron-down w-4 mr-2"></i>
-                            }
-                            <span>Load more</span>
-                        </button>
-                    )
+                    loading && !repositories
+                        ? (
+                            <div className="flex flex-col flex-1 items-center justify-center text-gray-800">
+                                <LoadingSpinner className="w-20 h-20 mb-2" />
+                                <div>Loading repositories...</div>
+                            </div>
+                        )
+                        : (
+                            <React.Fragment>
+                                <ul className="flex flex-row flex-wrap justify-between">
+                                    {
+                                        repositories && repositories.map((node: RepositoryData_user_repositories_nodes | null) => {
+                                            return node && (
+                                                <li key={node.id} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
+                                                    <a href={node.url} target="blank"
+                                                        className="text-blue-600 font-semibold text-xs hover:underline"
+                                                    >{node.name}</a>
+                                                    <p className="my-2 text-xs">{node.description}</p>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                                {
+                                    pageInfo?.hasNextPage && (
+                                        <button
+                                            className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 focus:outline-none"
+                                            onClick={onLoadMore}
+                                        // onClick={() => setLoadMore(!loadMore)}
+                                        >
+                                            {
+                                                loading
+                                                    ? <LoadingSpinner className="w-4 inline-block mr-2 text-white" />
+                                                    : <i className="fas fa-chevron-down w-4 mr-2"></i>
+                                            }
+                                            <span>Load more</span>
+                                        </button>
+                                    )
+                                }
+                            </React.Fragment>
+                        )
                 }
             </div>
         </React.Fragment>
