@@ -13,6 +13,18 @@ import { SearchBox } from './SearchBox';
 const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
     cache: new InMemoryCache(),
+    // TODO: define read and merge functions for repositories
+    // cache: new InMemoryCache({
+    //     typePolicies: {
+    //         User: {
+    //             fields: {
+    //                 repositories: {
+
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }),
     headers: {
         Authorization: `Bearer ${process.env.ACCESS_TOKEN}`
     }

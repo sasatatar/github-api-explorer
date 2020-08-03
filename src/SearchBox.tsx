@@ -9,10 +9,11 @@ import { useHistory } from 'react-router-dom';
 const USER_QUERY = gql`
     query User ($login: String!) { 
         user(login: $login) {
-            login,
-            email,
-            name,
-            url,
+            id
+            login
+            email
+            name
+            url
             avatarUrl(size: 100)
         }
     }

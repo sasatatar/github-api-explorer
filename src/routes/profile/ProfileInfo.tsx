@@ -1,8 +1,8 @@
 import React from 'react';
-import { Repos_user } from "~__generated__/Repos";
+import { UserProfile_user } from '~__generated__/UserProfile';
 
-export const UserProfile: React.FC<{ user: Repos_user }> = ({ user }) => {
-    return (
+export const ProfileInfo: React.FC<{ user: UserProfile_user | null }> = ({ user }) => {
+    return user && (
         <div className="w-1/4 py-5">
             <div className="w-full h-full border-r">
                 <div className="w-full flex flex-col items-end pr-3">

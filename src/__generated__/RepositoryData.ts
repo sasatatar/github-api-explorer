@@ -6,11 +6,12 @@
 import { RepositoryOrder } from "./globalTypes";
 
 // ====================================================
-// GraphQL query operation: MoreRepos
+// GraphQL query operation: RepositoryData
 // ====================================================
 
-export interface MoreRepos_user_repositories_nodes {
+export interface RepositoryData_user_repositories_nodes {
   __typename: "Repository";
+  id: string;
   /**
    * The name of the repository.
    */
@@ -25,7 +26,7 @@ export interface MoreRepos_user_repositories_nodes {
   url: any;
 }
 
-export interface MoreRepos_user_repositories_pageInfo {
+export interface RepositoryData_user_repositories_pageInfo {
   __typename: "PageInfo";
   /**
    * When paginating forwards, the cursor to continue.
@@ -37,34 +38,34 @@ export interface MoreRepos_user_repositories_pageInfo {
   hasNextPage: boolean;
 }
 
-export interface MoreRepos_user_repositories {
+export interface RepositoryData_user_repositories {
   __typename: "RepositoryConnection";
   /**
    * A list of nodes.
    */
-  nodes: (MoreRepos_user_repositories_nodes | null)[] | null;
+  nodes: (RepositoryData_user_repositories_nodes | null)[] | null;
   /**
    * Information to aid in pagination.
    */
-  pageInfo: MoreRepos_user_repositories_pageInfo;
+  pageInfo: RepositoryData_user_repositories_pageInfo;
 }
 
-export interface MoreRepos_user {
+export interface RepositoryData_user {
   __typename: "User";
   /**
    * A list of repositories that the user owns.
    */
-  repositories: MoreRepos_user_repositories;
+  repositories: RepositoryData_user_repositories;
 }
 
-export interface MoreRepos {
+export interface RepositoryData {
   /**
    * Lookup a user by login.
    */
-  user: MoreRepos_user | null;
+  user: RepositoryData_user | null;
 }
 
-export interface MoreReposVariables {
+export interface RepositoryDataVariables {
   cursor?: string | null;
   orderBy?: RepositoryOrder | null;
   login: string;
