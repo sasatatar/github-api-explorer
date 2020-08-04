@@ -9,22 +9,33 @@ import {
 } from "react-router-dom";
 import { Profile } from './routes/profile';
 import { SearchBox } from './SearchBox';
+import { RepositoryData_user_repositories } from '~__generated__/RepositoryData';
+
 
 const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
-    cache: new InMemoryCache(),
+    // cache: new InMemoryCache(),
     // TODO: define read and merge functions for repositories
-    // cache: new InMemoryCache({
-    //     typePolicies: {
-    //         User: {
-    //             fields: {
-    //                 repositories: {
-
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }),
+    cache: new InMemoryCache({
+        typePolicies: {
+            User: {
+                fields: {
+                    repositories: {
+                        merge(existing: RepositoryData_user_repositories | undefined, incoming: RepositoryData_user_repositories | undefined) {
+                            if (!existing) return incoming;
+                            return {
+                                ...incoming,
+                                nodes: [
+                                    ...existing.nodes, ...incoming?.nodes
+                                ]
+                            }
+                        },
+                        keyArgs: ['orderBy']
+                    }
+                }
+            }
+        }
+    }),
     headers: {
         Authorization: `Bearer ${process.env.ACCESS_TOKEN}`
     }

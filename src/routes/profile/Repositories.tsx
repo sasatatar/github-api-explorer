@@ -59,37 +59,36 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
     function onLoadMore() {
         fetchMore({
             variables: { cursor: pageInfo?.endCursor, login: userLogin },
-            // updateQuery: ({ user }: Repos, { fetchMoreResult }: { fetchMoreResult: Repos }) => {
-            updateQuery: (previousQueryResult: RepositoryData, options: {
-                fetchMoreResult?: RepositoryData | undefined;
-                variables?: RepositoryDataVariables | undefined;
-            }): RepositoryData => {
+            // updateQuery: (previousQueryResult: RepositoryData, options: {
+            //     fetchMoreResult?: RepositoryData | undefined;
+            //     variables?: RepositoryDataVariables | undefined;
+            // }): RepositoryData => {
 
-                let user = previousQueryResult.user;
-                let newUser = options?.fetchMoreResult?.user;
+            //     let user = previousQueryResult.user;
+            //     let newUser = options?.fetchMoreResult?.user;
 
-                if (!newUser) return previousQueryResult;
+            //     if (!newUser) return previousQueryResult;
 
-                return {
-                    user: {
-                        ...user,
-                        ...newUser,
-                        repositories: {
-                            ...newUser.repositories,
-                            nodes: [
-                                ...user?.repositories.nodes,
-                                ...newUser.repositories.nodes
-                            ],
-                            pageInfo: {
-                                __typename: newUser.repositories.pageInfo.__typename,
-                                endCursor: newUser.repositories?.pageInfo?.endCursor || null,
-                                hasNextPage: newUser.repositories?.pageInfo?.hasNextPage || false
-                            }
-                        }
-                    }
+            //     return {
+            //         user: {
+            //             ...user,
+            //             ...newUser,
+            //             repositories: {
+            //                 ...newUser.repositories,
+            //                 nodes: [
+            //                     ...user?.repositories.nodes,
+            //                     ...newUser.repositories.nodes
+            //                 ],
+            //                 pageInfo: {
+            //                     __typename: newUser.repositories.pageInfo.__typename,
+            //                     endCursor: newUser.repositories?.pageInfo?.endCursor || null,
+            //                     hasNextPage: newUser.repositories?.pageInfo?.hasNextPage || false
+            //                 }
+            //             }
+            //         }
 
-                }
-            }
+            //     }
+            // }
         })
     }
 
