@@ -28,7 +28,6 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
 
     let orderBy: RepositoryOrder | null = null;
     let [orderField, setOrderField] = useState<RepositoryOrderField | ''>('');
-    // TODO: implement sortDirection UI
     let [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
 
     orderBy = orderField
@@ -110,6 +109,16 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                     <option value={RepositoryOrderField.CREATED_AT}>Created at</option>
                     <option value={RepositoryOrderField.PUSHED_AT}>Pushed at</option>
                 </select>
+                <select
+                    onChange={e => {
+                        let value = e.target.value as OrderDirection;
+                        setOrderDirection(value);
+                    }}
+                    value={orderDirection} className="text-sm rounded-sm border"
+                >
+                    <option value={OrderDirection.ASC}>Asc</option>
+                    <option value={OrderDirection.DESC}>Desc</option>
+                </select>
             </div>
             <div className="flex-1 overflow-y-scroll flex flex-col items-center">
                 {
@@ -141,7 +150,6 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                                         <button
                                             className="self-center bg-blue-400 hover:bg-blue-600 rounded py-1 px-2 text-white text-sm mb-1 focus:outline-none"
                                             onClick={onLoadMore}
-                                        // onClick={() => setLoadMore(!loadMore)}
                                         >
                                             {
                                                 loading
