@@ -106,7 +106,7 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                                                 {
                                                     repositories && repositories.map((node: RepositoryData_user_repositories_nodes | null) => {
                                                         return node && (
-                                                            <li key={node.id} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
+                                                            <li key={node.id} className="repo_card px-3 py-2 my-2 mr-1 border border-gray-400 rounded-md">
                                                                 <a href={node.url} target="blank"
                                                                     className="text-blue-600 font-semibold text-xs hover:underline"
                                                                 >{node.name}</a>
