@@ -48,5 +48,5 @@ read and merge functions - this also fixes the previous issue, so definitely wor
 
 ### Styling
 - The app is not optimized for mobile devices, but I might do it in the future, just for practice. 
-- For some reason ::-webkit-scrollbar-thumb and ::-webkit-scrollbar-corner pseudo-elements are not included from styles.css in the budeled css file, which consequently makes the scrollbar handle invisible in production (on Chrome and Edge). `DONE:` try to figure out the cause and fix it. `Edit:` Looks like they need to be prefixed with a `*` or a class name, otherwise they are ignored.
+- For some reason `::-webkit-scrollbar-thumb` and `::-webkit-scrollbar-corner` pseudo-elements are not included from styles.css in the budeled css file, which consequently makes the scrollbar handle invisible in production (on Chrome and Edge). `DONE:` try to figure out the cause and fix it. `Edit:` Looks like they need to be prefixed with a `*` or a class name, otherwise they are ignored.
 - Styling with Tailwind results in a long list of utility classes which can seem a bit daunting at times, but after a while, it becomes declarative and easy to read. Alternatively, classes can be easily composed using the `@apply` directive.
