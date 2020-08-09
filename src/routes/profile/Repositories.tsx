@@ -56,39 +56,7 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
     if (error) console.log(error);
 
     function onLoadMore() {
-        fetchMore({
-            variables: { cursor: pageInfo?.endCursor, login: userLogin },
-            // updateQuery: (previousQueryResult: RepositoryData, options: {
-            //     fetchMoreResult?: RepositoryData | undefined;
-            //     variables?: RepositoryDataVariables | undefined;
-            // }): RepositoryData => {
-
-            //     let user = previousQueryResult.user;
-            //     let newUser = options?.fetchMoreResult?.user;
-
-            //     if (!newUser) return previousQueryResult;
-
-            //     return {
-            //         user: {
-            //             ...user,
-            //             ...newUser,
-            //             repositories: {
-            //                 ...newUser.repositories,
-            //                 nodes: [
-            //                     ...user?.repositories.nodes,
-            //                     ...newUser.repositories.nodes
-            //                 ],
-            //                 pageInfo: {
-            //                     __typename: newUser.repositories.pageInfo.__typename,
-            //                     endCursor: newUser.repositories?.pageInfo?.endCursor || null,
-            //                     hasNextPage: newUser.repositories?.pageInfo?.hasNextPage || false
-            //                 }
-            //             }
-            //         }
-
-            //     }
-            // }
-        })
+        fetchMore({ variables: { cursor: pageInfo?.endCursor, login: userLogin } })
     }
 
     return (
@@ -120,7 +88,7 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                     <option value={OrderDirection.DESC}>Desc</option>
                 </select>
             </div>
-            <div className="flex-1 overflow-y-scroll flex flex-col items-center">
+            <div className="flex-1 overflow-y-scroll flex flex-col items-center content-center">
                 {
                     loading && !repositories
                         ? (
@@ -131,20 +99,31 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                         )
                         : (
                             <React.Fragment>
-                                <ul className="flex flex-row flex-wrap justify-between">
-                                    {
-                                        repositories && repositories.map((node: RepositoryData_user_repositories_nodes | null) => {
-                                            return node && (
-                                                <li key={node.id} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
-                                                    <a href={node.url} target="blank"
-                                                        className="text-blue-600 font-semibold text-xs hover:underline"
-                                                    >{node.name}</a>
-                                                    <p className="my-2 text-xs">{node.description}</p>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                                {
+                                    repositories?.length || 0 > 0
+                                        ? (
+                                            <ul className="flex flex-row flex-wrap justify-between self-start">
+                                                {
+                                                    repositories && repositories.map((node: RepositoryData_user_repositories_nodes | null) => {
+                                                        return node && (
+                                                            <li key={node.id} className="repo_card px-3 py-2 my-2 border border-gray-400 rounded-md">
+                                                                <a href={node.url} target="blank"
+                                                                    className="text-blue-600 font-semibold text-xs hover:underline"
+                                                                >{node.name}</a>
+                                                                <p className="my-2 text-xs">{node.description}</p>
+                                                            </li>
+                                                        )
+                                                    })
+
+                                                }
+                                            </ul>
+                                        )
+                                        : (
+                                            <div className="flex flex-col flex-1 items-center justify-center text-gray-800">
+                                                <p>No repositories found</p>
+                                            </div>
+                                        )
+                                }
                                 {
                                     pageInfo?.hasNextPage && (
                                         <button
