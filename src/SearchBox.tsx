@@ -42,7 +42,7 @@ export const SearchBox: React.FC<{}> = () => {
                             className={`py-1 px-2 w-1/3 bg-white rounded border-blue-400 border flex flex-row items-center`}
                         >
                             <input type="text"
-                                className="text-lg outline-none w-full"
+                                className="text-lg outline-none search_input"
                                 placeholder="GitHub username"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
@@ -54,14 +54,14 @@ export const SearchBox: React.FC<{}> = () => {
                                 }}
                                 autoComplete="off"
                             />
-                            <div className="ml-2">
-                                <i className={`fas ${query ? 'fa-times' : 'fa-search'} w-5 text-sm font-thin text-gray-400 text-center hover:text-gray-600 lineheight-unset`}
-                                    onClick={() => {
-                                        setQuery('');
-                                        setIsOpen(false);
-                                    }}
-                                />
-                            </div>
+
+                            <i className={`ml-2 fas ${query ? 'fa-times' : 'fa-search'} w-5 text-sm font-thin text-gray-400 text-center hover:text-gray-600 lineheight-unset`}
+                                onClick={() => {
+                                    setQuery('');
+                                    setIsOpen(false);
+                                }}
+                            />
+
                         </div>
                         {
                             isOpen && (

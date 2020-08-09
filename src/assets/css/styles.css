@@ -25,6 +25,10 @@
     height: 50vh;
 }
 
+.search_input {
+    width: calc(100% - theme('spacing.2') - theme('spacing.5'))
+}
+
 .repo_card {
     width: 314px;
 }
