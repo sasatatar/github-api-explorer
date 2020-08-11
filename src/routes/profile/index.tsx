@@ -1,13 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { LoadingSpinner } from '~components/LoadingSpinner';
 import { ProfileInfo } from './ProfileInfo';
 import { Repositories } from './Repositories';
-import { RepositoryOrderField, OrderDirection, RepositoryOrder } from '~__generated__/globalTypes';
 import { UserProfile, UserProfileVariables, UserProfile_user } from '~__generated__/UserProfile';
-
-
 
 const QUERY_USER = gql`
     query UserProfile($login: String!){
@@ -23,7 +20,6 @@ const QUERY_USER = gql`
     }
 `;
 
-
 export const Profile: React.FC<{}> = () => {
 
     let { userLogin } = useParams();
@@ -34,9 +30,6 @@ export const Profile: React.FC<{}> = () => {
     });
 
     let user: UserProfile_user | null = data?.user || null;
-
-
-
 
     return (
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { User, UserVariables, User_user } from '~/__generated__/User';
 import { useDebounce } from '~/util/useDebounce';
@@ -19,13 +19,16 @@ const USER_QUERY = gql`
     }
 `;
 
-export const SearchBox: React.FC<{}> = () => {
+export const Header: React.FC<{}> = () => {
 
     const history = useHistory();
     const [query, setQuery] = useState('');
     let login = useDebounce(query, 500);
     let [isOpen, setIsOpen] = useState(false);
     let [searchHistory, updateSearchHistory] = useSearchHistory();
+    let inputField = useRef<HTMLInputElement>(null)
+
+    query && inputField?.current && inputField.current.focus();
 
     function onSelectUser(user: User_user) {
         updateSearchHistory(user);
@@ -42,6 +45,7 @@ export const SearchBox: React.FC<{}> = () => {
                             className={`py-1 px-2 w-1/3 bg-white rounded border-blue-400 border flex flex-row items-center`}
                         >
                             <input type="text"
+                                ref={inputField}
                                 className="text-lg outline-none search_input"
                                 placeholder="GitHub username"
                                 value={query}
@@ -71,7 +75,12 @@ export const SearchBox: React.FC<{}> = () => {
                             )
                         }
                     </div >
-                    <div>
+                    <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                            history.push('/', null);
+                        }}
+                    >
                         <span className="text-xl text-blue-400 mr-2">GitHub <span className="font-bold text-white">explorer</span></span>
                         <i className="fab fa-github text-blue-400 text-xl" />
                     </div>
