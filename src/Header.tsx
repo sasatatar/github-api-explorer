@@ -4,7 +4,7 @@ import { User, UserVariables, User_user } from '~/__generated__/User';
 import { useDebounce } from '~/util/useDebounce';
 import { useLocalStorage } from '~/util/useLocalStorage';
 import { LoadingSpinner } from '~components/LoadingSpinner';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const USER_QUERY = gql`
     query User ($login: String!) { 
@@ -75,15 +75,16 @@ export const Header: React.FC<{}> = () => {
                             )
                         }
                     </div >
-                    <div
+                    <Link
                         className="cursor-pointer"
-                        onClick={() => {
-                            history.push('/', null);
-                        }}
+                        // onClick={() => {
+                        //     history.push('/', null);
+                        // }}
+                        to="/"
                     >
                         <span className="text-xl text-blue-400 mr-2">GitHub <span className="font-bold text-white">explorer</span></span>
                         <i className="fab fa-github text-blue-400 text-xl" />
-                    </div>
+                    </Link>
                 </div >
             </div >
         </div>

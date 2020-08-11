@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 let SUGGESTIONS = [
     'getify',
@@ -21,12 +22,12 @@ export const Default: React.FC<{}> = () => {
                                 <li
                                     key={login}
                                 >
-                                    <a
-                                        href={`/${login}`}
+                                    <Link
+                                        to={`/${login}`}
                                         className="cursor-pointer text-blue-600 hover:underline"
                                     >
                                         {login}
-                                    </a>
+                                    </Link>
                                 </li>
                             )
                         })
@@ -34,12 +35,12 @@ export const Default: React.FC<{}> = () => {
                 </ul>
                 <p className="mt-10">
                     <span>Demo by </span>
-                    <a
-                        href='/sasatatar'
+                    <Link
+                        to='/sasatatar'
                         className="cursor-pointer text-blue-600 hover:underline"
                     >
                         Sasha Tatar
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
