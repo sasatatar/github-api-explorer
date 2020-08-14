@@ -132,7 +132,7 @@ export const Repositories: React.FC<{ userLogin: string }> = ({ userLogin }) => 
                                         >
                                             {
                                                 loading
-                                                    ? <LoadingSpinner className="w-4 inline-block mr-2 text-white" />
+                                                    ? <LoadingSpinner className="w-4 inline-block mr-2" />
                                                     : <i className="fas fa-chevron-down w-4 mr-2"></i>
                                             }
                                             <span>Load more</span>

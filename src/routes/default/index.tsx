@@ -3,19 +3,20 @@ import { Link } from "react-router-dom";
 
 let SUGGESTIONS = [
     'getify',
-    'drboolean',
+    'DrBoolean',
     'gaearon',
+    'ryanflorence',
     'kentcdodds',
     'chriscoyier'
 ]
 
 export const Default: React.FC<{}> = () => {
     return (
-        <div className="flex-1 h-full flex items-center justify-center">
-            <div className="mb-20 flex flex-col items-center">
-                <h1 className="text-2xl text-gray-800 font-bold mb-2">Welcome!</h1>
+        <div className="flex-1 h-full flex justify-center mt-10">
+            <div className="mb-20 flex flex-col items-center text-gray-800">
+                <h1 className="text-2xl text-blue-700 font-bold mb-8">Welcome!</h1>
                 <p>To get started, use the search field above or select one of the suggestions:</p>
-                <ul className="list-decimal">
+                <ul className="list-decimal mt-2">
                     {
                         SUGGESTIONS.map((login) => {
                             return (
