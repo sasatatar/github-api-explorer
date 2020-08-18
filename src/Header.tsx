@@ -28,8 +28,6 @@ export const Header: React.FC<{}> = () => {
     let [searchHistory, updateSearchHistory] = useSearchHistory();
     let inputField = useRef<HTMLInputElement>(null)
 
-    query && inputField?.current && inputField.current.focus();
-
     function onSelectUser(user: User_user) {
         updateSearchHistory(user);
         setIsOpen(false);
